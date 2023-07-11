@@ -1,0 +1,107 @@
+ DML PARTE 1
+
+Aqui estão os scripts necessários para realizar as 12 questões utilizando a sintaxe do MySQL:
+	
+		1 -) Insira três departamentos:
+
+INSERT INTO Departamentos (Codigo, Nome, Localizacao, CodigoFuncionarioGerente)
+VALUES (1, 'Departamento 1', 'Localizacao 1', NULL),
+       (2, 'Departamento 2', 'Localizacao 2', NULL),
+       (3, 'Departamento 3', 'Localizacao 3', NULL);
+
+		2-) Insira 12 funcionários, quatro em cada departamento:
+
+INSERT INTO Funcionários (Codigo, PrimeiroNome, SegundoNome, UltimoNome, DataNasci, CPF, RG, Endereço, CEP, Cidade, Fone, CodigoDepartamento, Função, Salario)
+VALUES
+  -- Funcionários do Departamento 1
+  (1, 'João', 'Silva', 'Almeida', '1990-01-01', '11111111111', '12345', 'Endereço 1', 'CEP 1', 'Cidade 1', '1111111', 1, 'Função 1', 1000),
+  (2, 'Maria', 'Santos', 'Oliveira', '1992-02-02', '22222222222', '67890', 'Endereco 2', 'CEP 2', 'Cidade 2', '2222222', 1, 'Funcao 2', 1500),
+  (3, 'Pedro', 'Cavalcante', 'Ribeiro', '1994-03-03', '33333333333', '54321', 'Endereco 3', 'CEP 3', 'Cidade 3', '3333333', 1, 'Funcao 3', 2000),
+  (4, 'Ana', 'Costa', 'Pereira', '1996-04-04', '44444444444', '98765', 'Endereco 4', 'CEP 4', 'Cidade 4', '4444444', 1, 'Funcao 4', 2500),
+
+  -- Funcionários do Departamento 2
+  (5, 'Lucas', 'Rodrigues', 'Souza', '1988-05-05', '55555555555', '13579', 'Endereco 5', 'CEP 5', 'Cidade 5', '5555555', 2, 'Funcao 1', 1200),
+  (6, 'Mariana', 'Ferreira', 'Gomes', '1990-06-06', '66666666666', '24680', 'Endereco 6', 'CEP 6', 'Cidade 6', '6666666', 2, 'Funcao 2', 1800),
+  (7, 'Gustavo', 'Carvalho', 'Lima', '1992-07-07', '77777777777', '97531', 'Endereco 7', 'CEP 7', 'Cidade 7', '7777777', 2, 'Funcao 3', 2200),
+  (8, 'Carolina', 'Mendes', 'Pinto', '1994-08-08', '88888888888', '86420', 'Endereco 8', 'CEP 8', 'Cidade 8', '8888888', 2, 'Funcao 4', 2700),
+
+  -- Funcionários do Departamento 3
+  (9, 'Marcos', 'Lopes', 'Rocha', '1991-09-09', '99999999999', '97531', 'Endereco 9', 'CEP 9', 'Cidade 9', '9999999', 3, 'Funcao 1', 1100),
+  (10, 'Camila', 'Barbosa', 'Fernandes', '1993-10-10', '10101010101', '24680', 'Endereco 10', 'CEP 10', 'Cidade 10', '1010101', 3, 'Funcao 2', 1600),
+  (11, 'Rafael', 'Oliveira', 'Pereira', '1995-11-11', '11111111111', '54321', 'Endereco 11', 'CEP 11', 'Cidade 11', '1111111', 3, 'Funcao 3', 2100),
+  (12, 'Isabela', 'Rocha', 'Mendes', '1997-12-12', '12121212121', '86420', 'Endereco 12', 'CEP 12', 'Cidade 12', '1212121', 3, 'Funcao 4', 2600);
+
+		3-) Exclua 2 funcionários:
+
+DELETE FROM Funcionarios WHERE Codigo IN (1, 2);
+
+		4-) Exclua 1 funcionário do primeiro departamento que criou:
+
+DELETE FROM Funcionarios WHERE CodigoDepartamento = 1 LIMIT 1;
+	
+		5-) Atualize o salário dos funcionários com 5% de aumento:
+
+UPDATE Funcionarios SET Salario = Salario * 1.05;
+
+		6-) Atualize com mais 2% o salário dos funcionários na função de gerente:
+
+UPDATE Funcionarios SET Salario = Salario * 1.02 WHERE Funcao = 'gerente';
+
+		7-) Consulte (liste) todos os departamentos:
+
+SELECT * FROM Departamentos;
+
+		8-)Consulte (liste) todos os funcionários:
+
+SELECT * FROM Funcionarios;
+
+		9-) Retorne o nome completo dos funcionários na função de gerente:
+
+SELECT CONCAT(PrimeiroNome, ' ', SegundoNome, ' ', UltimoNome) AS NomeCompleto FROM Funcionarios WHERE Funcao = 'gerente';
+
+		10-) Retorne a lista de funcionários que fazem aniversário este mês:
+s
+SELECT * FROM Funcionarios WHERE MONTH(DataNasci) = MONTH(CURDATE());
+
+		11-) Listar todos os funcionários que moram na cidade de Fortaleza:
+
+SELECT * FROM Funcionarios WHERE Cidade = 'Fortaleza';
+
+		12-) Exclua todos os registros das duas tabelas:
+
+DELETE FROM Funcionarios;
+DELETE FROM Departamentos;
+
+					
+						SLIDES DML PARTE 2		
+
+
+		1-) Liste os filmes que possuem taxa de locação (rental_rate) superior a R$ 3,00:
+
+SELECT * FROM film WHERE rental_rate > 3.00;
+
+		2-) Liste os atores que atuaram nos filmes disponíveis:
+
+SELECT DISTINCT actor.actor_id, actor.first_name, actor.last_name
+FROM actor
+JOIN film_actor ON actor.actor_id = film_actor.actor_id
+JOIN film ON film_actor.film_id = film.film_id
+WHERE film.rental_rate > 0;
+
+		3-) Apresente a quantidade de filmes por Duração da Locação (Rental_Duration) (Utilize o GROUP BY):
+
+SELECT rental_duration, COUNT(*) as quantidade_filmes
+FROM film
+GROUP BY rental_duration;
+
+		4-) Liste o valor do filme com maior preço de locação (rental_rate):
+
+SELECT MAX(rental_rate) AS maior_preco_locacao FROM film;
+
+		5-) Apresente os filmes que possuem no título a palavra ‘WEST’:
+
+SELECT * FROM film WHERE title LIKE '%WEST%';
+
+		6-) Liste os clientes que não estão ativos:
+
+SELECT * FROM customer WHERE active = 0;
